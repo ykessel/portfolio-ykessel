@@ -2,7 +2,6 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import Link from 'next/link'
 import { projects, type Project, type ProjectStatus } from '@/lib/data'
 
 const statusConfig: Record<ProjectStatus, { label: string; className: string }> = {
@@ -105,7 +104,7 @@ export default function Projects() {
           transition={{ duration: 0.6, delay: 0.5 }}
         >
           <a
-            href="https://github.com/yankessel"
+            href="https://github.com/ykessel"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-secondary hover:text-primary text-sm font-mono tracking-wide transition-colors duration-200 group"
@@ -123,93 +122,99 @@ function ProjectCard({ project }: { project: Project }) {
   const isClickable = project.status !== 'coming-soon'
   const status = statusConfig[project.status]
 
-  const inner = (
-    <div
-      className={`relative border rounded-2xl p-6 md:p-7 transition-all duration-300 ${
-        isClickable
-          ? 'border-surface-2 bg-surface group-hover:border-accent/20 group-hover:bg-surface/80'
-          : 'border-surface-2/50 bg-surface/40 opacity-60'
-      }`}
-    >
-      <div className="flex flex-col md:flex-row md:items-start gap-5 md:gap-8">
-        {/* Index */}
-        <span className="shrink-0 font-mono text-xs text-secondary/20 pt-1">{project.id}</span>
+  return (
+    <div className="group relative">
+      <div
+        className={`relative border rounded-2xl p-6 md:p-7 transition-all duration-300 ${
+          isClickable
+            ? 'border-surface-2 bg-surface group-hover:border-accent/20 group-hover:bg-surface/80'
+            : 'border-surface-2/50 bg-surface/40 opacity-60'
+        }`}
+      >
+        <div className="flex flex-col md:flex-row md:items-start gap-5 md:gap-8">
+          {/* Index */}
+          <span className="shrink-0 font-mono text-xs text-secondary/20 pt-1">{project.id}</span>
 
-        {/* Main content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2.5 mb-2.5">
-            <h3
-              className={`font-display font-semibold text-xl md:text-2xl transition-colors duration-200 ${
-                isClickable ? 'text-primary group-hover:text-accent' : 'text-primary/60'
-              }`}
-            >
-              {project.title}
-            </h3>
-
-            {/* Category badge */}
-            <span className="text-[11px] text-secondary/60 bg-surface-2/60 border border-surface-2 px-2.5 py-0.5 rounded-full font-mono shrink-0">
-              {project.category}
-            </span>
-
-            {/* Status badge */}
-            <span
-              className={`text-[11px] px-2.5 py-0.5 rounded-full font-mono border shrink-0 ${status.className}`}
-            >
-              {status.label}
-            </span>
-          </div>
-
-          <p className="text-secondary/70 text-sm md:text-base leading-relaxed max-w-2xl mb-2.5">
-            {project.description}
-          </p>
-
-          {project.status !== 'coming-soon' && (
-            <p className="text-accent/60 text-xs font-mono leading-relaxed max-w-xl">
-              ↳ {project.highlight}
-            </p>
-          )}
-        </div>
-
-        {/* Stack + action */}
-        <div className="flex flex-col items-start md:items-end gap-3.5 shrink-0">
-          <div className="flex flex-wrap gap-1.5 md:justify-end">
-            {project.stack.slice(0, 4).map((tech) => (
-              <span
-                key={tech}
-                className={`text-[11px] border px-2 py-0.5 rounded-full font-mono ${
-                  isClickable
-                    ? 'text-accent/70 border-accent/15'
-                    : 'text-secondary/30 border-surface-2/50'
+          {/* Main content */}
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2.5 mb-2.5">
+              <h3
+                className={`font-display font-semibold text-xl md:text-2xl transition-colors duration-200 ${
+                  isClickable ? 'text-primary group-hover:text-accent' : 'text-primary/60'
                 }`}
               >
-                {tech}
+                {project.title}
+              </h3>
+
+              {/* Category badge */}
+              <span className="text-[11px] text-secondary/60 bg-surface-2/60 border border-surface-2 px-2.5 py-0.5 rounded-full font-mono shrink-0">
+                {project.category}
               </span>
-            ))}
-            {project.stack.length > 4 && (
-              <span className="text-[11px] text-secondary/30 font-mono">
-                +{project.stack.length - 4}
+
+              {/* Status badge */}
+              <span
+                className={`text-[11px] px-2.5 py-0.5 rounded-full font-mono border shrink-0 ${status.className}`}
+              >
+                {status.label}
               </span>
+            </div>
+
+            <p className="text-secondary/70 text-sm md:text-base leading-relaxed max-w-2xl mb-2.5">
+              {project.description}
+            </p>
+
+            {project.status !== 'coming-soon' && (
+              <p className="text-accent/60 text-xs font-mono leading-relaxed max-w-xl">
+                ↳ {project.highlight}
+              </p>
             )}
           </div>
 
-          {isClickable && (
-            <span className="text-xs text-secondary group-hover:text-accent font-mono flex items-center gap-1 transition-colors duration-200">
-              Ver Case Study
-              <span className="group-hover:translate-x-1 transition-transform duration-200 inline-block">
-                →
-              </span>
-            </span>
-          )}
+          {/* Stack + actions */}
+          <div className="flex flex-col items-start md:items-end gap-3.5 shrink-0">
+            <div className="flex flex-wrap gap-1.5 md:justify-end">
+              {project.stack.slice(0, 4).map((tech) => (
+                <span
+                  key={tech}
+                  className={`text-[11px] border px-2 py-0.5 rounded-full font-mono ${
+                    isClickable
+                      ? 'text-accent/70 border-accent/15'
+                      : 'text-secondary/30 border-surface-2/50'
+                  }`}
+                >
+                  {tech}
+                </span>
+              ))}
+              {project.stack.length > 4 && (
+                <span className="text-[11px] text-secondary/30 font-mono">
+                  +{project.stack.length - 4}
+                </span>
+              )}
+            </div>
+
+            {isClickable && (
+              <div className="flex items-center gap-4">
+                {project.live && (
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-accent/60 hover:text-accent font-mono transition-colors duration-200"
+                  >
+                    Live ↗
+                  </a>
+                )}
+                <a
+                  href={`/projects/${project.slug}`}
+                  className="text-xs text-secondary hover:text-accent font-mono transition-colors duration-200"
+                >
+                  Case Study →
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
-  )
-
-  if (!isClickable) return inner
-
-  return (
-    <Link href={`/projects/${project.slug}`} className="block group">
-      {inner}
-    </Link>
   )
 }

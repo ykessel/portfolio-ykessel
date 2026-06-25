@@ -1,25 +1,28 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google'
+import { Archivo, JetBrains_Mono, Instrument_Serif } from 'next/font/google'
 import './globals.css'
 import CustomCursor from '@/components/ui/CustomCursor'
 import Navigation from '@/components/ui/Navigation'
 
-const spaceGrotesk = Space_Grotesk({
+const archivo = Archivo({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
-})
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-archivo',
+  weight: ['400', '500', '600', '700', '800', '900'],
   display: 'swap',
 })
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-jetbrains-mono',
-  weight: ['400', '500'],
+  weight: ['400', '500', '600'],
+  display: 'swap',
+})
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  variable: '--font-instrument-serif',
+  weight: ['400'],
+  style: ['normal', 'italic'],
   display: 'swap',
 })
 
@@ -41,9 +44,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} bg-background text-primary font-body antialiased`}
+        className={`${archivo.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} bg-background text-primary font-body antialiased`}
       >
         <CustomCursor />
         <Navigation />

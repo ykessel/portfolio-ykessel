@@ -20,37 +20,38 @@ export type Project = {
 }
 
 export const projects: Project[] = [
-  // ─── 01 Narratix ────────────────────────────────────────
+  // ─── 01 Syncboard ───────────────────────────────────────
   {
     id: '01',
-    slug: 'narratix',
-    title: 'Narratix',
-    subtitle: 'Blog & Publishing Platform',
-    category: 'Web App',
-    year: '2025',
+    slug: 'syncboard',
+    title: 'Syncboard',
+    subtitle: 'Real-Time Collaborative Kanban',
+    category: 'SaaS',
+    year: '2026',
     role: 'Full Stack Developer',
-    status: 'coming-soon',
+    status: 'completed',
     description:
-      'Plataforma de contenido con CMS headless (Sanity), posts en MDX y score Lighthouse 100. Dominio completo de SSG, SEO y performance.',
+      'Kanban board with real-time collaboration: drag & drop, live presence, threaded card comments, multi-tenant organizations and instant sync via Supabase Realtime.',
     highlight:
-      'Score Lighthouse 100 en todas las métricas con ISR y optimización avanzada de assets.',
+      'Sub-50ms sync with Supabase Realtime, multi-tenant orgs, invitation links and full card management — no refresh ever.',
     overview:
-      'Narratix es una plataforma de blog moderna construida con Next.js y Sanity como CMS headless. Los posts se escriben en MDX, permitiendo embeber componentes React directamente en el contenido. El objetivo fue alcanzar Lighthouse 100 en todas las métricas.',
+      'Syncboard is a collaborative task-management tool where multiple users work on the same board simultaneously, see who is connected and move cards with drag & drop in real time. It supports organizations, board-scoped membership, card priorities, assignees and threaded comments.',
     challenge:
-      'El mayor reto fue implementar ISR (Incremental Static Regeneration) correctamente: regenerar solo el post editado sin afectar el resto del sitio, manteniendo tiempos de build bajos y el contenido siempre fresco.',
+      'The hardest part was eliminating infinite-recursion RLS policies that arise when boards check board_members and vice-versa. The fix was a pair of SECURITY DEFINER helper functions that bypass RLS internally, used by every policy instead of direct subqueries.',
     features: [
-      'CMS headless con Sanity Studio integrado',
-      'Posts en MDX con componentes React embebidos',
-      'Resaltado de código con Shiki (multi-lenguaje)',
-      'Tabla de contenidos autogenerada con scroll spy',
-      'ISR: revalidación por post sin full rebuild',
-      'Lighthouse 100 en Performance, SEO, Accesibilidad y Best Practices',
-      'RSS feed automático y sitemap dinámico',
-      'Open Graph images generadas dinámicamente',
+      'Real-time sync via Supabase Realtime postgres_changes',
+      'Live presence — avatar strip shows who is online',
+      'Drag & drop columns and cards with dnd-kit',
+      'Multi-tenant organizations with slug-based URLs',
+      'Token-based invitation links (no email required)',
+      'Card detail modal: assignee, priority, due date, archive',
+      'Threaded card comments with real-time updates',
+      'GitHub OAuth — one-click sign-in, no passwords',
+      'Row Level Security on every table via SECURITY DEFINER helpers',
     ],
-    stack: ['Next.js', 'Sanity CMS', 'MDX', 'TypeScript', 'Tailwind CSS', 'Shiki', 'ISR'],
-    live: null,
-    github: null,
+    stack: ['Next.js 16', 'TypeScript', 'Supabase', 'dnd-kit', 'Tailwind CSS', 'Framer Motion'],
+    live: 'https://syncboard-ten.vercel.app/',
+    github: 'https://github.com/ykessel/Syncboard',
   },
 
   // ─── 02 DevBoard ────────────────────────────────────────
@@ -59,222 +60,168 @@ export const projects: Project[] = [
     slug: 'devboard',
     title: 'DevBoard',
     subtitle: 'GitHub Productivity Dashboard',
-    category: 'SaaS',
-    year: '2025',
+    category: 'Dashboard',
+    year: '2026',
     role: 'Full Stack Developer',
-    status: 'coming-soon',
+    status: 'completed',
     description:
-      'Panel SaaS que conecta con la API de GitHub para visualizar métricas de productividad personal: commits, PRs, streak y lenguajes más usados.',
+      'Personal SaaS dashboard that connects to the GitHub API via OAuth to visualise your productivity: commits, PRs, streaks, top repos and language breakdown — all in one panel.',
     highlight:
-      'Autenticación OAuth con GitHub y gráficos interactivos en tiempo real con Recharts.',
+      'GitHub OAuth with NextAuth, interactive commit heatmap, language chart and 30-day activity graph built with Recharts.',
     overview:
-      'DevBoard es un dashboard personal para desarrolladores que conecta con la API de GitHub via OAuth y muestra métricas de productividad: actividad diaria, repositorios más activos, lenguajes utilizados y racha de commits.',
+      'DevBoard is a productivity dashboard for developers. Once you sign in with GitHub, it pulls your contribution data and presents it as a clean visual overview: daily commit heatmap, PR count, active repo list and language distribution. Built with a minimal monochrome design that keeps the data front and centre.',
     challenge:
-      'El reto principal fue manejar los límites de rate de la GitHub API eficientemente: implementé un sistema de caché con Redis que almacena los datos por usuario durante 5 minutos, reduciendo las llamadas a la API en un 90%.',
+      'GitHub\'s REST API has tight rate limits per user. The solution was caching each user\'s aggregated stats in the session layer and serving stale-while-revalidate so the dashboard feels instant while refreshes happen in the background.',
     features: [
-      'OAuth con GitHub (NextAuth)',
-      'Dashboard con gráficos de actividad (Recharts)',
-      'Métricas: commits, PRs, issues, streak',
-      'Top repositorios y lenguajes',
-      'Caché inteligente con Redis',
-      'Exportación de métricas a PDF',
+      'GitHub OAuth sign-in (NextAuth / Auth.js)',
+      'Commit activity heatmap for the last 12 months',
+      '30-day commit trend line chart (Recharts)',
+      'Language distribution doughnut chart',
+      'Top repositories by stars, forks and last push',
+      'Recent events feed: pushes, PRs, issues',
+      'Monochrome slate design with a single cyan accent point',
     ],
-    stack: ['Next.js', 'TypeScript', 'NextAuth', 'Recharts', 'Prisma', 'PostgreSQL', 'Redis'],
-    live: null,
-    github: null,
+    stack: ['Next.js 16', 'TypeScript', 'NextAuth', 'GitHub API', 'Recharts', 'Tailwind CSS'],
+    live: 'https://devboard-liard.vercel.app/',
+    github: 'https://github.com/ykessel/DevBoard',
   },
 
-  // ─── 03 SparkAI ─────────────────────────────────────────
+  // ─── 03 Narratix ────────────────────────────────────────
   {
     id: '03',
-    slug: 'sparkai',
-    title: 'SparkAI',
-    subtitle: 'AI Writing Assistant',
-    category: 'AI Tool',
-    year: '2025',
-    role: 'Frontend Developer',
-    status: 'coming-soon',
+    slug: 'narratix',
+    title: 'Narratix',
+    subtitle: 'Blog & Publishing Platform',
+    category: 'Web App',
+    year: '2026',
+    role: 'Full Stack Developer',
+    status: 'completed',
     description:
-      'Asistente de escritura con IA y streaming de respuestas token a token. Modos de escritura, historial de conversaciones y rate limiting por usuario.',
+      'Modern blog platform with MDX posts, syntax-highlighted code blocks, auto-generated RSS feed and a clean editorial design. Articles cover Next.js, TypeScript, CSS and interface craft.',
     highlight:
-      'Streaming de respuestas con AI SDK de Vercel y UX conversacional de alto impacto.',
+      'MDX-powered posts with embedded React components, auto RSS feed, reading-time estimates and Open Graph images per article.',
     overview:
-      'SparkAI es una herramienta de escritura asistida por IA que permite a los usuarios generar, mejorar y resumir texto en tiempo real. Las respuestas se transmiten token a token (como ChatGPT) para una experiencia fluida.',
+      'Narratix is a developer-focused blog built with Next.js App Router. Posts are written in MDX, enabling React components to be embedded directly in content. The design is deliberately minimal — editorial typography with a dark warm palette and generous whitespace — so the words stay centre stage.',
     challenge:
-      'Implementar el streaming correctamente en Next.js App Router fue el mayor desafío: usé Server Actions con ReadableStream para transmitir los tokens directamente al cliente sin necesidad de un endpoint de API separado.',
+      'Getting Open Graph images to generate dynamically per post (using Next.js opengraph-image route) without referencing localhost in production required careful metadata configuration and verifying the canonical URL at build time.',
     features: [
-      'Streaming de respuestas token a token (AI SDK)',
-      'Modos: escritor, corrector, resumidor, brainstorm',
-      'Historial de conversaciones persistente',
-      'Rate limiting por usuario (Upstash)',
-      'Exportar conversación a markdown',
-      'Atajos de teclado para productividad',
+      'MDX posts with embedded React components',
+      'Syntax-highlighted code blocks',
+      'Auto-generated RSS feed (/feed.xml)',
+      'Reading-time estimates per post',
+      'Category / tag filtering',
+      'Featured post hero section',
+      'Dynamic Open Graph images per article',
+      'Dark editorial design with Tailwind Typography',
     ],
-    stack: ['Next.js', 'AI SDK', 'OpenAI API', 'TypeScript', 'Server Actions', 'Zustand', 'Upstash'],
-    live: null,
-    github: null,
+    stack: ['Next.js 16', 'TypeScript', 'MDX', 'Tailwind CSS', 'Tailwind Typography'],
+    live: 'https://narratix-three.vercel.app/',
+    github: 'https://github.com/ykessel/Narratix',
   },
 
-  // ─── 04 ShopForge ───────────────────────────────────────
+  // ─── 04 Vortex ──────────────────────────────────────────
   {
     id: '04',
-    slug: 'shopforge',
-    title: 'ShopForge',
+    slug: 'vortex',
+    title: 'Vortex',
+    subtitle: 'Digital Agency Website',
+    category: 'Marketing Site',
+    year: '2025',
+    role: 'Frontend Developer',
+    status: 'completed',
+    description:
+      'Bilingual (PT/EN) marketing site for a Brazilian digital agency. Services showcase, portfolio grid, team section, testimonials, multi-step contact form and animated scroll transitions.',
+    highlight:
+      'Full PT/EN internationalisation with Next.js i18n routing, marquee trust strip, animated section reveals and a conversion-focused contact form.',
+    overview:
+      'Vortex is the public-facing site for a Brazilian web & mobile agency. The site targets both local (Portuguese) and international (English) clients and is built around a clear narrative: services → portfolio → process → contact. Every section is animated on scroll to keep engagement high.',
+    challenge:
+      'Implementing bilingual routing cleanly in Next.js App Router — where each language has its own URL segment (/pt and /en) — required a custom i18n setup with locale-aware metadata, canonical tags and hreflang attributes for SEO.',
+    features: [
+      'Bilingual routing: /pt and /en with Next.js i18n',
+      'Services grid with hover-reveal detail panels',
+      'Portfolio case study cards with category filter',
+      'Animated section reveals on scroll',
+      'Marquee company trust strip',
+      'Team & about section',
+      'Star-rated testimonials carousel',
+      'Multi-field contact form with project-type selector',
+      'WhatsApp / Calendly / email CTA blocks',
+    ],
+    stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'i18n'],
+    live: 'https://vortex-site-zeta.vercel.app/en',
+    github: 'https://github.com/ykessel/Vortex',
+  },
+
+  // ─── 05 Vela ────────────────────────────────────────────
+  {
+    id: '05',
+    slug: 'vela',
+    title: 'Vela',
     subtitle: 'Full-Stack E-commerce',
     category: 'E-commerce',
     year: '2025',
     role: 'Full Stack Developer',
-    status: 'coming-soon',
+    status: 'completed',
     description:
-      'Tienda online completa con checkout via Stripe, panel de administración, gestión de órdenes y emails transaccionales. El proyecto más completo del portfolio.',
+      'Full-stack e-commerce platform with product catalogue, cart, Stripe checkout, and a complete admin panel for managing products, orders and inventory.',
     highlight:
-      'Checkout real con Stripe Webhooks, carrito persistente con Zustand y emails con Resend.',
+      'End-to-end Stripe integration with webhook-driven order management and a custom admin dashboard for full store control.',
     overview:
-      'ShopForge es una plataforma de e-commerce completa: catálogo de productos, carrito de compras, checkout con Stripe, panel admin para gestionar productos/órdenes, y emails transaccionales automáticos.',
+      'Vela is a production-ready e-commerce store built from scratch: product browsing, shopping cart, Stripe Checkout, Stripe Webhooks for reliable order state management, and a passwordless admin panel where the owner can create, edit and delete products and view order history.',
     challenge:
-      'La sincronización entre el estado del carrito en el cliente y las sesiones de Stripe fue compleja. Implementé Stripe Checkout Sessions con webhooks para actualizar el estado de la orden de forma confiable incluso si el usuario cierra el navegador.',
+      'Keeping cart state consistent across server and client while running Stripe Checkout sessions required careful coordination: cart data is persisted server-side and Stripe Webhooks update order status asynchronously, even if the user closes the browser mid-checkout.',
     features: [
-      'Catálogo con filtros, búsqueda y paginación',
-      'Carrito persistente con Zustand + localStorage',
-      'Checkout real con Stripe (+ Apple/Google Pay)',
-      'Webhooks de Stripe para manejo de órdenes',
-      'Panel admin: productos, órdenes, analytics',
-      'Emails transaccionales con Resend',
-      'SEO dinámico por producto (metadata + JSON-LD)',
+      'Product catalogue with image gallery and filtering',
+      'Shopping cart with persistent state',
+      'Stripe Checkout with card, Apple Pay and Google Pay',
+      'Stripe Webhooks for reliable order lifecycle management',
+      'Admin panel: create, edit and delete products',
+      'Order management and status tracking',
+      'Secure admin authentication',
+      'Responsive design across all breakpoints',
     ],
-    stack: ['Next.js', 'TypeScript', 'Stripe', 'Prisma', 'PostgreSQL', 'NextAuth', 'Zustand', 'Resend'],
-    live: null,
-    github: null,
+    stack: ['Next.js', 'TypeScript', 'Stripe', 'Prisma', 'PostgreSQL', 'Tailwind CSS'],
+    live: 'https://vela-pink.vercel.app/',
+    github: 'https://github.com/ykessel/Vela',
   },
 
-  // ─── 05 Syncboard ───────────────────────────────────────
-  {
-    id: '05',
-    slug: 'syncboard',
-    title: 'Syncboard',
-    subtitle: 'Real-Time Collaborative Kanban',
-    category: 'Productivity',
-    year: '2025',
-    role: 'Full Stack Developer',
-    status: 'coming-soon',
-    description:
-      'Tablero Kanban con colaboración en tiempo real: drag & drop, presencia de usuarios y sincronización instantánea via Supabase Realtime.',
-    highlight:
-      'Colaboración multi-usuario en tiempo real con presencia y actualizaciones optimistas.',
-    overview:
-      'Syncboard es una herramienta de gestión de tareas colaborativa donde múltiples usuarios pueden trabajar en el mismo tablero simultáneamente, ver quién está conectado y mover tarjetas con drag & drop en tiempo real.',
-    challenge:
-      'El mayor reto fue el manejo de conflictos cuando dos usuarios mueven la misma tarjeta simultáneamente. Implementé actualizaciones optimistas con rollback automático usando Supabase Realtime y un sistema de versioning por tarjeta.',
-    features: [
-      'Drag & drop con dnd-kit (accesible)',
-      'Sincronización en tiempo real (Supabase Realtime)',
-      'Presencia: avatares de usuarios conectados',
-      'Actualizaciones optimistas con rollback',
-      'Workspaces y boards múltiples por equipo',
-      'Historial de actividad por board',
-    ],
-    stack: ['Next.js', 'TypeScript', 'Supabase', 'dnd-kit', 'Zustand', 'Tailwind CSS'],
-    live: null,
-    github: null,
-  },
-
-  // ─── 06 Tripcraft ───────────────────────────────────────
+  // ─── 06 Portfolio ───────────────────────────────────────
   {
     id: '06',
-    slug: 'tripcraft',
-    title: 'Tripcraft',
-    subtitle: 'AI Travel Planner + Maps',
-    category: 'PWA',
-    year: '2025',
-    role: 'Frontend Developer',
-    status: 'coming-soon',
+    slug: 'portfolio',
+    title: 'Portfolio',
+    subtitle: 'Personal Developer Portfolio',
+    category: 'Portfolio',
+    year: '2026',
+    role: 'Designer & Developer',
+    status: 'completed',
     description:
-      'Planificador de viajes con itinerarios generados por IA y mapas interactivos (Mapbox). Funciona offline como PWA instalable en móvil.',
+      'This portfolio — editorial dark design with warm tones, massive Archivo typography, staggered Framer Motion reveals and a case-study system for each project.',
     highlight:
-      'Funcionalidad offline completa via Service Workers e itinerarios generados con IA.',
+      'Editorial "01 / Premium" aesthetic: 158px Archivo headings, Instrument Serif italic accents, JetBrains Mono labels and growX divider animations.',
     overview:
-      'Tripcraft permite planificar viajes completos: el usuario describe su destino, días disponibles y presupuesto, y la IA genera un itinerario día a día. Los puntos de interés aparecen en un mapa interactivo con Mapbox.',
+      'Built to showcase work and reflect a clear design voice. The site uses an editorial layout inspired by print design — oversized numerals, tight leading, a warm dark palette and a strict type system. Each project links to a full case study page with overview, challenge and feature breakdown.',
     challenge:
-      'Hacer que la app funcione offline fue el mayor desafío técnico. Usé Service Workers con una estrategia cache-first para assets y datos de viajes guardados, combinado con IndexedDB para persistir itinerarios sin conexión.',
+      'The main design challenge was achieving the editorial scale (158px headings) responsively without layout breaking on smaller screens. The solution was fluid type with clamp() — the heading scales between 72px and 158px based on viewport width with no breakpoint jumps.',
     features: [
-      'Itinerarios generados con IA (AI SDK)',
-      'Mapa interactivo con Mapbox GL JS',
-      'PWA: instalable, offline, push notifications',
-      'Geolocalización para "cerca de mí"',
-      'Guardar y compartir viajes',
-      'Presupuesto estimado por día y categoría',
+      'Editorial hero: giant Archivo name, info table, growX divider',
+      'Staggered riseIn entrance animations (Framer Motion)',
+      'Case study pages per project with overview & challenge',
+      'Instrument Serif italic accent in hero subtitle',
+      'JetBrains Mono for all labels, metadata and nav',
+      'Warm dark palette — radial-gradient background',
+      'Fully responsive with fluid clamp() typography',
+      'Custom cursor (desktop)',
     ],
-    stack: ['Next.js', 'TypeScript', 'Mapbox GL', 'AI SDK', 'PWA', 'IndexedDB', 'Tailwind CSS'],
-    live: null,
-    github: null,
-  },
-
-  // ─── 07 DataPulse ───────────────────────────────────────
-  {
-    id: '07',
-    slug: 'datapulse',
-    title: 'DataPulse',
-    subtitle: 'Interactive Data Visualization',
-    category: 'Dashboard',
-    year: '2025',
-    role: 'Frontend Developer',
-    status: 'coming-soon',
-    description:
-      'Dashboard de visualización de datos financieros con gráficos complejos en D3.js: timelines, heatmaps, scatter plots y filtros dinámicos.',
-    highlight:
-      'Gráficos 100% custom con D3.js y animaciones SVG frame-perfect a 60fps.',
-    overview:
-      'DataPulse es un dashboard de análisis de datos que visualiza datasets financieros públicos con gráficos complejos construidos desde cero con D3.js. El usuario puede filtrar por rango de fechas, comparar activos y exportar vistas.',
-    challenge:
-      'Renderizar +10,000 puntos de datos en D3.js sin degradar el rendimiento fue el reto central. Implementé canvas rendering para los datasets grandes (>1000 puntos) y SVG para los pequeños, con transiciones suaves entre ambos.',
-    features: [
-      'Line charts, bar charts y heatmaps en D3.js',
-      'Scatter plots interactivos con zoom y pan',
-      'Filtros dinámicos por fecha y categoría',
-      'Canvas rendering para datasets grandes',
-      'Exportar gráficos como PNG/SVG',
-      'Tooltips interactivos y crosshair',
-    ],
-    stack: ['Next.js', 'TypeScript', 'D3.js', 'Canvas API', 'React Query', 'Tailwind CSS'],
-    live: null,
-    github: null,
-  },
-
-  // ─── 08 MotionKit ───────────────────────────────────────
-  {
-    id: '08',
-    slug: 'motionkit',
-    title: 'MotionKit',
-    subtitle: 'Animated Component Library',
-    category: 'Open Source',
-    year: '2025',
-    role: 'Library Author',
-    status: 'coming-soon',
-    description:
-      'Librería de componentes React con animaciones Framer Motion, accesibilidad WCAG completa, documentación interactiva y publicación en npm.',
-    highlight:
-      'Publicado en npm con TypeScript generics, accesibilidad WCAG 2.1 AA y docs en Storybook.',
-    overview:
-      'MotionKit es una librería open source de componentes React animados. Cada componente está construido con TypeScript estricto, respeta las preferencias de movimiento reducido (prefers-reduced-motion) y cumple con WCAG 2.1 AA. La documentación vive en Storybook.',
-    challenge:
-      'El reto más difícil fue diseñar una API de componentes lo suficientemente flexible para ser útil en proyectos diferentes, sin sacrificar type-safety. Usé TypeScript generics y discriminated unions para que los tipos se infieran automáticamente según las props.',
-    features: [
-      '20+ componentes animados (Modal, Toast, Accordion, Tabs...)',
-      'TypeScript avanzado: generics y discriminated unions',
-      'Accesibilidad WCAG 2.1 AA completa',
-      'Respeta prefers-reduced-motion',
-      'Documentación interactiva en Storybook',
-      'Tests con Vitest + Testing Library',
-      'Publicado en npm (tree-shakeable)',
-    ],
-    stack: ['React', 'TypeScript', 'Framer Motion', 'Vitest', 'Storybook', 'tsup', 'npm'],
-    live: null,
-    github: null,
+    stack: ['Next.js 16', 'TypeScript', 'Framer Motion', 'Tailwind CSS', 'Archivo', 'Vercel'],
+    live: 'https://portfolio-ykessel.vercel.app/',
+    github: 'https://github.com/ykessel/portfolio',
   },
 ]
 
 export const socialLinks = [
-  { label: 'GitHub', href: 'https://github.com/yankessel' },
+  { label: 'GitHub', href: 'https://github.com/ykessel' },
   { label: 'LinkedIn', href: 'https://linkedin.com/in/yankessel' },
   { label: 'Twitter', href: 'https://twitter.com/yankessel' },
 ]
