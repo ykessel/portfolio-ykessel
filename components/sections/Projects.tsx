@@ -2,6 +2,7 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import Image from 'next/image'
 import { projects, type Project, type ProjectStatus } from '@/lib/data'
 
 const statusConfig: Record<ProjectStatus, { label: string; className: string }> = {
@@ -134,6 +135,19 @@ function ProjectCard({ project }: { project: Project }) {
         <div className="flex flex-col md:flex-row md:items-start gap-5 md:gap-8">
           {/* Index */}
           <span className="shrink-0 font-mono text-xs text-secondary/20 pt-1">{project.id}</span>
+
+          {/* Thumbnail */}
+          {project.image && (
+            <div className="shrink-0 w-full md:w-[160px] h-[90px] rounded-xl overflow-hidden border border-surface-2 bg-surface-2">
+              <Image
+                src={project.image}
+                alt={project.title}
+                width={160}
+                height={90}
+                className={`w-full h-full object-cover object-top transition-transform duration-500 ${isClickable ? 'group-hover:scale-105' : ''}`}
+              />
+            </div>
+          )}
 
           {/* Main content */}
           <div className="flex-1 min-w-0">

@@ -17,6 +17,7 @@ export type Project = {
   stack: string[]
   live: string | null
   github: string | null
+  image?: string   // path relative to /public, e.g. "/images/syncboard.png"
 }
 
 export const projects: Project[] = [
@@ -52,6 +53,7 @@ export const projects: Project[] = [
     stack: ['Next.js 16', 'TypeScript', 'Supabase', 'dnd-kit', 'Tailwind CSS', 'Framer Motion'],
     live: 'https://syncboard-ten.vercel.app/',
     github: 'https://github.com/ykessel/Syncboard',
+    image: '/images/syncboard.png',
   },
 
   // ─── 02 DevBoard ────────────────────────────────────────
@@ -84,6 +86,7 @@ export const projects: Project[] = [
     stack: ['Next.js 16', 'TypeScript', 'NextAuth', 'GitHub API', 'Recharts', 'Tailwind CSS'],
     live: 'https://devboard-liard.vercel.app/',
     github: 'https://github.com/ykessel/DevBoard',
+    image: '/images/devboard.png',
   },
 
   // ─── 03 Narratix ────────────────────────────────────────
@@ -117,6 +120,7 @@ export const projects: Project[] = [
     stack: ['Next.js 16', 'TypeScript', 'MDX', 'Tailwind CSS', 'Tailwind Typography'],
     live: 'https://narratix-three.vercel.app/',
     github: 'https://github.com/ykessel/Narratix',
+    image: '/images/narratix.png',
   },
 
   // ─── 04 Vortex ──────────────────────────────────────────
@@ -151,6 +155,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'i18n'],
     live: 'https://vortex-site-zeta.vercel.app/en',
     github: 'https://github.com/ykessel/Vortex',
+    image: '/images/vortex.png',
   },
 
   // ─── 05 Vela ────────────────────────────────────────────
@@ -184,6 +189,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'TypeScript', 'Stripe', 'Prisma', 'PostgreSQL', 'Tailwind CSS'],
     live: 'https://vela-pink.vercel.app/',
     github: 'https://github.com/ykessel/Vela',
+    image: '/images/vela.png',
   },
 
   // ─── 06 Portfolio ───────────────────────────────────────
@@ -217,6 +223,43 @@ export const projects: Project[] = [
     stack: ['Next.js 16', 'TypeScript', 'Framer Motion', 'Tailwind CSS', 'Archivo', 'Vercel'],
     live: 'https://portfolio-ykessel.vercel.app/',
     github: 'https://github.com/ykessel/portfolio',
+    image: '/images/portfolio.png',
+  },
+
+  // ─── 07 Prism ───────────────────────────────────────────────
+  {
+    id: '07',
+    slug: 'prism',
+    title: 'Prism',
+    subtitle: 'Interactive Financial Dashboard',
+    category: 'Dashboard',
+    year: '2026',
+    role: 'Full Stack Developer',
+    status: 'completed',
+    description:
+      'Real-time stock market dashboard with D3.js charts, live data from the Finnhub API, sector heatmap, market treemap and a full watchlist with sparklines.',
+    highlight:
+      'Area & candlestick charts built with D3.js + React SVG, real-time prices via Finnhub, graceful fallback to demo data when API is unavailable.',
+    overview:
+      'Prism is a financial data dashboard tracking 8 major stocks (AAPL, MSFT, GOOGL, AMZN, NVDA, META, TSLA, NFLX). It pulls live quotes from the Finnhub API and renders them through a suite of custom D3.js charts — area, candlestick, volume bars, sector heatmap and a market-cap-weighted treemap. All charts are responsive via ResizeObserver.',
+    challenge:
+      'The Finnhub free tier blocks historical candle data (/stock/candle returns 403). The solution was a hybrid approach: live prices, P/E, 52W high/low and volume come from Finnhub; historical OHLCV for charts is served from seeded mock data that looks realistic. The API key never reaches the client — all calls go through a Next.js server route with a 60s in-memory cache.',
+    features: [
+      'Live prices, change % and key metrics from Finnhub API',
+      'Area chart with gradient fill, crosshair and price tooltip',
+      'Candlestick chart with OHLC tooltip',
+      'Volume bars chart with green/red coloring',
+      'Sector heatmap — 11 S&P 500 sectors, 1D/1W/1M periods',
+      'Market treemap — market-cap weighted with change % color',
+      'Watchlist table with inline sparklines per ticker',
+      'Shimmer skeleton loading states',
+      'Graceful fallback to demo data with retry banner',
+      'Server-side API route with 60s in-memory cache',
+    ],
+    stack: ['Next.js 16', 'TypeScript', 'D3.js', 'Finnhub API', 'Tailwind CSS', 'Framer Motion'],
+    live: 'https://prism-financial-woad.vercel.app/',
+    github: 'https://github.com/ykessel/Prism',
+    image: '/images/prism.png',
   },
 ]
 
