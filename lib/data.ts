@@ -18,13 +18,53 @@ export type Project = {
   live: string | null
   github: string | null
   image?: string   // path relative to /public, e.g. "/images/syncboard.png"
+  gallery?: string[]   // extra screenshots shown on the case-study page
+  featured?: boolean   // shown as a large card on the landing page
 }
 
 export const projects: Project[] = [
-  // ─── 01 Syncboard ───────────────────────────────────────
+  // ─── 01 DashApp ─────────────────────────────────────────
   {
     id: '01',
+    slug: 'dashapp',
+    title: 'DashApp',
+    subtitle: 'Team Workspace & Productivity Suite',
+    category: 'SaaS',
+    year: '2026',
+    role: 'Full Stack Developer',
+    status: 'completed',
+    featured: true,
+    description:
+      'All-in-one team workspace: a personal home with daily rings and focus timer, kanban and list task views, month/week calendar, project tracking, team insights, timesheets and workload planning.',
+    highlight:
+      'Eight connected modules behind one sign-in — tasks, calendar, projects, insights, timesheet and team — with ⌘K search and light/dark themes.',
+    overview:
+      'DashApp brings the tools a product team juggles every day into a single workspace. The Home view summarises the day — tasks done, focus hours and meetings as activity rings, the next meeting and a built-in focus timer. Tasks live on a kanban board or list with project, owner and priority filters; the calendar combines meetings, milestones and due dates; Insights charts throughput, on-time rate, focus hours and workload against each person\u2019s weekly capacity.',
+    // TODO(Yan): replace with the real technical challenge you solved in DashApp.
+    challenge:
+      'Keeping eight modules consistent: a task edited on the board has to update the Home rings, the calendar due dates and the Insights charts at the same time, without a page reload.',
+    features: [
+      'Home dashboard: activity rings, up-next meeting and focus timer',
+      'Tasks as kanban board or list, with project, owner and priority filters',
+      'Month and week calendar with meetings, milestones and due tasks',
+      'Insights: throughput, on-time rate, focus hours and cycle time (7D / 30D / 90D)',
+      'Workload view: open hours against each teammate\u2019s weekly capacity',
+      'Projects, timesheet and team directory',
+      'Sign in with Google, GitHub, email or magic link',
+      'Global ⌘K search, quick-create and light / dark theme',
+    ],
+    // TODO(Yan): confirm / complete the stack.
+    stack: ['TypeScript', 'OAuth (Google · GitHub)', 'Fly.io'],
+    live: 'https://dashapp.fly.dev/',
+    github: null,
+    image: '/images/dashapp.png',
+    gallery: ['/images/dashapp-tasks.png', '/images/dashapp-insights.png', '/images/dashapp-calendar.png'],
+  },
+  // ─── 02 Syncboard ───────────────────────────────────────
+  {
+    id: '02',
     slug: 'syncboard',
+    featured: true,
     title: 'Syncboard',
     subtitle: 'Real-Time Collaborative Kanban',
     category: 'SaaS',
@@ -56,9 +96,9 @@ export const projects: Project[] = [
     image: '/images/syncboard.png',
   },
 
-  // ─── 02 DevBoard ────────────────────────────────────────
+  // ─── 03 DevBoard ────────────────────────────────────────
   {
-    id: '02',
+    id: '03',
     slug: 'devboard',
     title: 'DevBoard',
     subtitle: 'GitHub Productivity Dashboard',
@@ -89,9 +129,9 @@ export const projects: Project[] = [
     image: '/images/devboard.png',
   },
 
-  // ─── 03 Narratix ────────────────────────────────────────
+  // ─── 04 Narratix ────────────────────────────────────────
   {
-    id: '03',
+    id: '04',
     slug: 'narratix',
     title: 'Narratix',
     subtitle: 'Blog & Publishing Platform',
@@ -123,9 +163,9 @@ export const projects: Project[] = [
     image: '/images/narratix.png',
   },
 
-  // ─── 04 Vortex ──────────────────────────────────────────
+  // ─── 05 Vortex ──────────────────────────────────────────
   {
-    id: '04',
+    id: '05',
     slug: 'vortex',
     title: 'Vortex',
     subtitle: 'Digital Agency Website',
@@ -158,9 +198,9 @@ export const projects: Project[] = [
     image: '/images/vortex.png',
   },
 
-  // ─── 05 Vela ────────────────────────────────────────────
+  // ─── 06 Vela ────────────────────────────────────────────
   {
-    id: '05',
+    id: '06',
     slug: 'vela',
     title: 'Vela',
     subtitle: 'Full-Stack E-commerce',
@@ -192,9 +232,9 @@ export const projects: Project[] = [
     image: '/images/vela.png',
   },
 
-  // ─── 06 Portfolio ───────────────────────────────────────
+  // ─── 07 Portfolio ───────────────────────────────────────
   {
-    id: '06',
+    id: '07',
     slug: 'portfolio',
     title: 'Portfolio',
     subtitle: 'Personal Developer Portfolio',
@@ -226,10 +266,11 @@ export const projects: Project[] = [
     image: '/images/portfolio.png',
   },
 
-  // ─── 07 Prism ───────────────────────────────────────────────
+  // ─── 08 Prism ───────────────────────────────────────────────
   {
-    id: '07',
+    id: '08',
     slug: 'prism',
+    featured: true,
     title: 'Prism',
     subtitle: 'Interactive Financial Dashboard',
     category: 'Dashboard',

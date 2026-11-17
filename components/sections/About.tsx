@@ -34,7 +34,7 @@ export default function About() {
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6 }}
         >
-          01
+          02
         </motion.span>
 
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 -mt-6 md:-mt-10">
@@ -72,8 +72,8 @@ export default function About() {
             {/* Mini stats */}
             <div className="flex gap-10 mt-10">
               {[
-                { value: '2+', label: 'Years building' },
-                { value: '10+', label: 'Projects shipped' },
+                { value: '3+', label: 'Years building' },
+                { value: '20+', label: 'Projects shipped' },
               ].map((stat) => (
                 <div key={stat.label}>
                   <p className="font-display font-bold text-3xl text-primary">{stat.value}</p>
