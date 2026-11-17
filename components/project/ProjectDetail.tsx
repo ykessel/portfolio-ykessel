@@ -3,6 +3,7 @@
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import type { Project } from '@/lib/data'
 
 const fadeUp = (delay = 0) => ({
@@ -147,8 +148,13 @@ function ProjectBody({ project }: { project: Project }) {
         right={<ContentBlock label="The Challenge" text={project.challenge} delay={0.1} />}
       />
 
-      {/* Screenshot placeholder */}
-      <ScreenshotSection />
+      {/* Screenshot */}
+      <ScreenshotSection image={project.image} title={project.title} />
+
+      {/* Extra screens */}
+      {project.gallery && project.gallery.length > 0 && (
+        <GallerySection images={project.gallery} title={project.title} />
+      )}
 
       {/* Key Features */}
       <FeaturesSection features={project.features} />
@@ -201,7 +207,7 @@ function ContentBlock({
   )
 }
 
-function ScreenshotSection() {
+function ScreenshotSection({ image, title }: { image?: string; title: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
@@ -211,19 +217,56 @@ function ScreenshotSection() {
       variants={fadeUp(0)}
       initial="hidden"
       animate={inView ? 'show' : 'hidden'}
+      className="overflow-hidden rounded-2xl border border-surface-2"
     >
-      {/* Replace this div with an <Image> from next/image once you have screenshots */}
-      <div className="w-full aspect-video bg-surface border border-surface-2 rounded-2xl flex items-center justify-center">
-        <div className="text-center space-y-2">
+      {image ? (
+        <div className="w-full aspect-video relative">
+          <Image
+            src={image}
+            alt={`${title} screenshot`}
+            fill
+            className="object-cover object-top"
+            sizes="(max-width: 768px) 100vw, (max-width: 1400px) 80vw, 1200px"
+            priority={false}
+          />
+        </div>
+      ) : (
+        <div className="w-full aspect-video bg-surface flex items-center justify-center">
           <p className="text-secondary/30 font-mono text-xs tracking-widest uppercase">
-            Screenshot / Mockup
-          </p>
-          <p className="text-secondary/20 text-xs font-mono">
-            Reemplaza con{' '}
-            <code className="text-accent/40">&lt;Image&gt;</code> de next/image
+            Screenshot coming soon
           </p>
         </div>
-      </div>
+      )}
+    </motion.div>
+  )
+}
+
+function GallerySection({ images, title }: { images: string[]; title: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
+
+  return (
+    <motion.div
+      ref={ref}
+      variants={fadeUp(0)}
+      initial="hidden"
+      animate={inView ? 'show' : 'hidden'}
+      className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+    >
+      {images.map((src, i) => (
+        <div
+          key={src}
+          className="relative w-full aspect-[16/10] overflow-hidden rounded-xl border border-surface-2 bg-surface"
+        >
+          <Image
+            src={src}
+            alt={`${title} screen ${i + 2}`}
+            fill
+            className="object-cover object-top"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        </div>
+      ))}
     </motion.div>
   )
 }

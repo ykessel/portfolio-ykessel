@@ -27,13 +27,13 @@ const instrumentSerif = Instrument_Serif({
 })
 
 export const metadata: Metadata = {
-  title: 'Yan Kessel — Web Developer',
+  title: 'Yan Kessel — Frontend Developer',
   description:
-    'Web developer building fast, modern, and memorable digital experiences.',
+    'Yan Kessel — frontend developer building web products with Next.js, TypeScript and real-time interfaces. Live demos of every project.',
   openGraph: {
-    title: 'Yan Kessel — Web Developer',
+    title: 'Yan Kessel — Frontend Developer',
     description:
-      'Web developer building fast, modern, and memorable digital experiences.',
+      'Frontend developer building web products with Next.js, TypeScript and real-time interfaces.',
     type: 'website',
   },
 }

@@ -5,110 +5,85 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import { projects, type Project, type ProjectStatus } from '@/lib/data'
 
-const statusConfig: Record<ProjectStatus, { label: string; className: string }> = {
-  completed: {
-    label: 'Completado',
-    className: 'text-accent/80 border-accent/20 bg-accent/5',
-  },
-  'in-progress': {
-    label: 'En progreso',
-    className: 'text-amber-400/80 border-amber-400/20 bg-amber-400/5',
-  },
-  'coming-soon': {
-    label: 'Próximamente',
-    className: 'text-secondary/50 border-surface-2 bg-transparent',
-  },
+// Only shown for work that is not finished yet — "completed" is the default and needs no badge.
+const statusLabel: Partial<Record<ProjectStatus, string>> = {
+  'in-progress': 'In progress',
+  'coming-soon': 'Coming soon',
 }
 
 export default function Projects() {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
-  const completed = projects.filter((p) => p.status === 'completed')
-  const inProgress = projects.filter((p) => p.status === 'in-progress')
-  const comingSoon = projects.filter((p) => p.status === 'coming-soon')
+  const featured = projects.filter((p) => p.featured)
+  const [lead, ...secondary] = featured
+  const rest = projects.filter((p) => !p.featured)
 
-  const ordered = [...completed, ...inProgress, ...comingSoon]
+  const reveal = (delay: number) => ({
+    initial: { opacity: 0, y: 28 },
+    animate: inView ? { opacity: 1, y: 0 } : {},
+    transition: { duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] as const },
+  })
 
   return (
-    <section id="projects" ref={ref} className="px-6 md:px-14 py-28 md:py-36 bg-surface/30">
+    <section id="projects" ref={ref} className="px-6 md:px-14 py-20 md:py-28 scroll-mt-20">
       <div className="max-w-7xl mx-auto">
-        {/* Section header */}
-        <motion.span
-          className="block font-display font-bold text-primary/[0.03] leading-none select-none"
-          style={{ fontSize: 'clamp(6rem, 15vw, 11rem)' }}
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          02
-        </motion.span>
-
-        <motion.div
-          className="-mt-6 md:-mt-10 mb-5"
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.05 }}
-        >
-          <h2
-            className="font-display font-bold text-primary leading-tight"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}
-          >
-            Selected Work
-          </h2>
-        </motion.div>
-
-        {/* Stats row */}
-        <motion.div
-          className="flex flex-wrap gap-6 mb-14 text-xs font-mono"
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.12 }}
-        >
-          <span className="text-secondary">
-            <span className="text-primary font-semibold">{projects.length}</span> proyectos totales
-          </span>
-          {completed.length > 0 && (
-            <span className="text-accent/70">
-              <span className="text-accent font-semibold">{completed.length}</span> completados
+        {/* Header */}
+        <motion.div className="flex flex-wrap items-end justify-between gap-4 mb-10" {...reveal(0)}>
+          <div className="flex flex-col gap-2">
+            <span className="font-mono text-[13px] tracking-[.08em] uppercase" style={{ color: '#8F8A7E' }}>
+              01 — Selected work
             </span>
-          )}
-          {inProgress.length > 0 && (
-            <span className="text-amber-400/70">
-              <span className="text-amber-400 font-semibold">{inProgress.length}</span> en progreso
-            </span>
-          )}
-          <span className="text-secondary/50">
-            <span className="text-secondary/70 font-semibold">{comingSoon.length}</span> próximamente
-          </span>
-        </motion.div>
-
-        {/* Project cards */}
-        <div className="space-y-4">
-          {ordered.map((project, i) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 28 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.08 + i * 0.07, ease: [0.25, 0.1, 0.25, 1] }}
+            <h2
+              className="font-display font-bold text-primary leading-tight m-0"
+              style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-.03em' }}
             >
-              <ProjectCard project={project} />
-            </motion.div>
-          ))}
-        </div>
+              Products I’ve shipped
+            </h2>
+          </div>
+          <a
+            href="#all-projects"
+            className="font-mono text-[14px] py-3 text-[#C9C4B8] hover:text-accent transition-colors duration-200"
+          >
+            All {projects.length} projects →
+          </a>
+        </motion.div>
 
-        {/* GitHub link */}
-        <motion.div
-          className="mt-12 text-center"
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.5 }}
-        >
+        {/* Lead project — full width */}
+        {lead && (
+          <motion.div className="mb-6" {...reveal(0.08)}>
+            <FeaturedCard project={lead} wide />
+          </motion.div>
+        )}
+
+        {/* Other featured projects */}
+        {secondary.length > 0 && (
+          <div className="grid md:grid-cols-2 gap-6">
+            {secondary.map((project, i) => (
+              <motion.div key={project.id} {...reveal(0.16 + i * 0.08)}>
+                <FeaturedCard project={project} />
+              </motion.div>
+            ))}
+          </div>
+        )}
+
+        {/* Everything else — compact list */}
+        {rest.length > 0 && (
+          <div id="all-projects" className="mt-14 border-t border-border scroll-mt-24">
+            {rest.map((project, i) => (
+              <motion.div key={project.id} {...reveal(0.3 + i * 0.05)}>
+                <ProjectRow project={project} />
+              </motion.div>
+            ))}
+          </div>
+        )}
+
+        <motion.div className="mt-10" {...reveal(0.5)}>
           <a
             href="https://github.com/ykessel"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-secondary hover:text-primary text-sm font-mono tracking-wide transition-colors duration-200 group"
+            className="inline-flex items-center gap-2 py-3 text-secondary hover:text-primary text-sm font-mono tracking-wide transition-colors duration-200 group"
           >
             More on GitHub
             <span className="group-hover:translate-x-1 transition-transform duration-200">↗</span>
@@ -119,116 +94,101 @@ export default function Projects() {
   )
 }
 
-function ProjectCard({ project }: { project: Project }) {
-  const isClickable = project.status !== 'coming-soon'
-  const status = statusConfig[project.status]
-
+function StatusBadge({ status }: { status: ProjectStatus }) {
+  const label = statusLabel[status]
+  if (!label) return null
   return (
-    <div className="group relative">
-      <div
-        className={`relative border rounded-2xl p-6 md:p-7 transition-all duration-300 ${
-          isClickable
-            ? 'border-surface-2 bg-surface group-hover:border-accent/20 group-hover:bg-surface/80'
-            : 'border-surface-2/50 bg-surface/40 opacity-60'
-        }`}
+    <span className="text-[11px] px-2.5 py-0.5 rounded-full font-mono border border-amber-400/30 text-amber-300">
+      {label}
+    </span>
+  )
+}
+
+function FeaturedCard({ project, wide = false }: { project: Project; wide?: boolean }) {
+  return (
+    <article
+      className={`group h-full rounded-[18px] border border-border bg-surface p-3 transition-colors duration-300 hover:border-accent/30 ${
+        wide ? 'grid lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-6 lg:gap-10 items-center' : 'flex flex-col gap-4'
+      }`}
+    >
+      <a
+        href={`/projects/${project.slug}`}
+        className="block relative w-full aspect-[16/10] rounded-[12px] overflow-hidden border border-surface-2 bg-surface-2"
+        aria-label={`${project.title} case study`}
       >
-        <div className="flex flex-col md:flex-row md:items-start gap-5 md:gap-8">
-          {/* Index */}
-          <span className="shrink-0 font-mono text-xs text-secondary/20 pt-1">{project.id}</span>
+        {project.image && (
+          <Image
+            src={project.image}
+            alt={`${project.title} screenshot`}
+            fill
+            className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+            sizes={wide ? '(max-width: 1024px) 100vw, 60vw' : '(max-width: 768px) 100vw, 50vw'}
+            priority={wide}
+          />
+        )}
+      </a>
 
-          {/* Thumbnail */}
-          {project.image && (
-            <div className="shrink-0 w-full md:w-[160px] h-[90px] rounded-xl overflow-hidden border border-surface-2 bg-surface-2">
-              <Image
-                src={project.image}
-                alt={project.title}
-                width={160}
-                height={90}
-                className={`w-full h-full object-cover object-top transition-transform duration-500 ${isClickable ? 'group-hover:scale-105' : ''}`}
-              />
-            </div>
+      <div className={`flex flex-col gap-3 ${wide ? 'px-3 pb-3 lg:px-0 lg:pr-6' : 'px-3 pb-4'}`}>
+        <div className="flex items-baseline justify-between gap-3">
+          <h3
+            className="font-display font-semibold text-primary m-0"
+            style={{ fontSize: wide ? 'clamp(1.75rem, 3vw, 2.5rem)' : '1.5rem', letterSpacing: '-.02em' }}
+          >
+            {project.title}
+          </h3>
+          <span className="font-mono text-[12px] shrink-0" style={{ color: '#8F8A7E' }}>
+            {project.category}
+          </span>
+        </div>
+        <StatusBadge status={project.status} />
+        <p className="m-0 text-[16px] leading-relaxed" style={{ color: '#B8B3A7' }}>
+          {wide ? project.description : project.highlight}
+        </p>
+        <p className="m-0 font-mono text-[12px]" style={{ color: '#8F8A7E' }}>
+          {project.stack.slice(0, 4).join(' · ')}
+        </p>
+        <div className="flex items-center gap-6 pt-1">
+          {project.live && (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[15px] py-2 text-accent hover:brightness-110"
+            >
+              Live demo ↗
+            </a>
           )}
-
-          {/* Main content */}
-          <div className="flex-1 min-w-0">
-            <div className="flex flex-wrap items-center gap-2.5 mb-2.5">
-              <h3
-                className={`font-display font-semibold text-xl md:text-2xl transition-colors duration-200 ${
-                  isClickable ? 'text-primary group-hover:text-accent' : 'text-primary/60'
-                }`}
-              >
-                {project.title}
-              </h3>
-
-              {/* Category badge */}
-              <span className="text-[11px] text-secondary/60 bg-surface-2/60 border border-surface-2 px-2.5 py-0.5 rounded-full font-mono shrink-0">
-                {project.category}
-              </span>
-
-              {/* Status badge */}
-              <span
-                className={`text-[11px] px-2.5 py-0.5 rounded-full font-mono border shrink-0 ${status.className}`}
-              >
-                {status.label}
-              </span>
-            </div>
-
-            <p className="text-secondary/70 text-sm md:text-base leading-relaxed max-w-2xl mb-2.5">
-              {project.description}
-            </p>
-
-            {project.status !== 'coming-soon' && (
-              <p className="text-accent/60 text-xs font-mono leading-relaxed max-w-xl">
-                ↳ {project.highlight}
-              </p>
-            )}
-          </div>
-
-          {/* Stack + actions */}
-          <div className="flex flex-col items-start md:items-end gap-3.5 shrink-0">
-            <div className="flex flex-wrap gap-1.5 md:justify-end">
-              {project.stack.slice(0, 4).map((tech) => (
-                <span
-                  key={tech}
-                  className={`text-[11px] border px-2 py-0.5 rounded-full font-mono ${
-                    isClickable
-                      ? 'text-accent/70 border-accent/15'
-                      : 'text-secondary/30 border-surface-2/50'
-                  }`}
-                >
-                  {tech}
-                </span>
-              ))}
-              {project.stack.length > 4 && (
-                <span className="text-[11px] text-secondary/30 font-mono">
-                  +{project.stack.length - 4}
-                </span>
-              )}
-            </div>
-
-            {isClickable && (
-              <div className="flex items-center gap-4">
-                {project.live && (
-                  <a
-                    href={project.live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-accent/60 hover:text-accent font-mono transition-colors duration-200"
-                  >
-                    Live ↗
-                  </a>
-                )}
-                <a
-                  href={`/projects/${project.slug}`}
-                  className="text-xs text-secondary hover:text-accent font-mono transition-colors duration-200"
-                >
-                  Case Study →
-                </a>
-              </div>
-            )}
-          </div>
+          <a href={`/projects/${project.slug}`} className="text-[15px] py-2 text-primary hover:text-accent transition-colors">
+            Case study →
+          </a>
         </div>
       </div>
-    </div>
+    </article>
+  )
+}
+
+function ProjectRow({ project }: { project: Project }) {
+  const clickable = project.status !== 'coming-soon'
+  const Tag = clickable ? 'a' : 'div'
+  return (
+    <Tag
+      {...(clickable ? { href: `/projects/${project.slug}` } : {})}
+      className="group flex flex-wrap items-center gap-x-8 gap-y-2 py-5 px-1 border-b border-border transition-colors duration-200 hover:bg-surface/60"
+    >
+      <span className="font-mono text-[13px] w-8 shrink-0" style={{ color: '#8F8A7E' }}>
+        {project.id}
+      </span>
+      <span className="font-display font-semibold text-[20px] md:text-[22px] text-primary md:w-[200px] shrink-0 group-hover:text-accent transition-colors">
+        {project.title}
+      </span>
+      <span className="text-[15px] md:text-[16px] flex-1 min-w-[240px]" style={{ color: '#B8B3A7' }}>
+        {project.subtitle}
+      </span>
+      <StatusBadge status={project.status} />
+      <span className="font-mono text-[12px]" style={{ color: '#8F8A7E' }}>
+        {project.category}
+      </span>
+      {clickable && <span className="text-accent" aria-hidden="true">→</span>}
+    </Tag>
   )
 }
