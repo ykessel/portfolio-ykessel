@@ -1,28 +1,33 @@
 import type { Metadata } from 'next'
-import { Archivo, JetBrains_Mono, Instrument_Serif } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import CustomCursor from '@/components/ui/CustomCursor'
 import Navigation from '@/components/ui/Navigation'
 
-const archivo = Archivo({
-  subsets: ['latin'],
+// Fonts are self-hosted (app/fonts, OFL-1.1 via Fontsource) so the build never
+// depends on downloading from Google Fonts.
+const archivo = localFont({
+  src: './fonts/archivo-latin-wght-normal.woff2',
   variable: '--font-archivo',
-  weight: ['400', '500', '600', '700', '800', '900'],
+  weight: '100 900',
+  style: 'normal',
   display: 'swap',
 })
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
+const jetbrainsMono = localFont({
+  src: './fonts/jetbrains-mono-latin-wght-normal.woff2',
   variable: '--font-jetbrains-mono',
-  weight: ['400', '500', '600'],
+  weight: '100 800',
+  style: 'normal',
   display: 'swap',
 })
 
-const instrumentSerif = Instrument_Serif({
-  subsets: ['latin'],
+const instrumentSerif = localFont({
+  src: [
+    { path: './fonts/instrument-serif-latin-400-normal.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/instrument-serif-latin-400-italic.woff2', weight: '400', style: 'italic' },
+  ],
   variable: '--font-instrument-serif',
-  weight: ['400'],
-  style: ['normal', 'italic'],
   display: 'swap',
 })
 
